@@ -1,33 +1,28 @@
 import React from "react";
 import axios from "axios";
-// import Log from "debug";
 
-export default class LanguageInput extends React.Component {
+export default class Search extends React.Component {
   state = {
-    language: "",
+    search: "",
     jobs: []
   };
 
   handleChange = event => {
-    console.log("CHANGING");
-    this.setState({ language: event.target.value });
+    this.setState({ search: event.target.value });
   };
 
   handleSubmit = event => {
-    // Log.info(`App Component`);
     event.preventDefault();
-    console.log("HANDLE SUZBMIT");
-    const language = {
-      language: this.state.language
+    const search = {
+      search: this.state.search
     };
 
-    console.log(language.language);
+    console.log(search.search);
     axios
       .get(
-        `https://cors-anywhere.herokuapp.com/https://jobs.github.com/positions.json?search=${language.language}`
+        `https://cors-anywhere.herokuapp.com/https://jobs.github.com/positions.json?search=${search.search}`
       )
       .then(rep => {
-        // console.log(rep.JSON());
         this.setState({ jobs: rep.data });
       });
   };
@@ -35,7 +30,7 @@ export default class LanguageInput extends React.Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <label>Programming Language:</label>
+          <label>Search Jobs on Github:</label>
           <input
             id="search"
             type="text"
@@ -46,12 +41,9 @@ export default class LanguageInput extends React.Component {
           <button type="submit">Add</button>
         </form>
 
-        <p>{this.state.language}</p>
+        <p>{this.state.search}</p>
         <ul>
           {this.state.jobs.map((job, index) => {
-            console.log(job);
-            // console.log(job.type + ": " + job.company);
-            // console.log(index);
             return (
               <li key={index}>
                 <a href={job.url}>{job.title}</a> | {job.company}
